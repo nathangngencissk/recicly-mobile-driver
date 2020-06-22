@@ -20,6 +20,9 @@
           <nb-input v-model="cpf" placeholder="CPF" />
         </nb-item>
         <nb-item>
+          <nb-input v-model="drivers_license" placeholder="Habilitação" />
+        </nb-item>
+        <nb-item>
           <nb-input v-model="email" placeholder="Email" />
         </nb-item>
         <nb-item last>
@@ -58,6 +61,7 @@ export default {
     return {
       name: "",
       cpf: "",
+      drivers_license: "",
       email: "",
       password: ""
     };
@@ -68,6 +72,7 @@ export default {
       store.dispatch("ADD_USER", {
         name: this.name,
         cpf: this.cpf,
+        drivers_license: this.drivers_license,
         email: this.email,
         password: this.password
       });

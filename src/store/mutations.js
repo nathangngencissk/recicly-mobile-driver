@@ -69,3 +69,20 @@ export function SET_ORDERS(state, orders) {
 export function REDUCE_POINTS(state, price) {
     state.userObj.points -= price;
 }
+
+export function FETCHING_NEW_REQUESTS(state) {
+    state.fetchingNewRequests = true;
+}
+
+export function SET_NEW_REQUESTS(state, requests) {
+    state.fetchingNewRequests = false;
+    state.newRequests = requests;
+}
+
+export function SET_SELECTED_REQUEST(state, request) {
+    state.selectedRequest = request;
+}
+
+export function SET_CURRENT_DELIVERY(state, delivery) {
+    state.currentDelivery = delivery;
+}

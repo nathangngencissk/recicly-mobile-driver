@@ -35,7 +35,7 @@ export function fetchUsers() {
 }
 
 export function login(userData) {
-    return _post('user/authenticate', userData)
+    return _post('driver/authenticate', userData)
 }
 
 export function fetchPosts(type) {
@@ -47,7 +47,7 @@ export function fetchAdresses(id) {
 }
 
 export function fetchRequests(id) {
-    return _fetch(`user/requests?id=${id}`);
+    return _fetch(`driver/requests?id=${id}`);
 }
 
 export function addRequest(id) {
@@ -67,9 +67,17 @@ export function addAddress(address) {
 }
 
 export function addUser(user) {
-    return _post('user/add', user);
+    return _post('driver/add', user);
 }
 
 export function buyProduct(payload) {
     return _post('user/buy', payload);
+}
+
+export function fetchNewRequests() {
+    return _fetch('request/new');
+}
+
+export function startDelivery(delivery) {
+    return _post('driver/start-delivery', delivery);
 }

@@ -30,34 +30,34 @@
           <text :style="{fontSize: 20, fontWeight: 'bold', color: '#35654d'}">{{userPoints}} pts</text>
         </nb-col>
       </nb-row>
-      <nb-spinner v-if="fetchingAddresses" />
+      <nb-spinner v-if="fetchingNewRequests" />
       <nb-list v-else>
         <nb-list-item
-          v-for="address in userAddresses"
-          :key="address.id"
-          :onPress="() => changeAddress(address)"
+          v-for="request in newRequests"
+          :key="request.request.id"
+          :onPress="() => changeRequest(request)"
         >
           <nb-left>
-            <nb-text>{{address.street}}</nb-text>
+            <nb-text>{{request.user.name}}</nb-text>
+            <nb-text>{{request.user.email}}</nb-text>
           </nb-left>
           <nb-right>
-            <nb-radio :selected="address==selectedAddress" />
+            <nb-radio :selected="request==selectedRequest" />
           </nb-right>
         </nb-list-item>
       </nb-list>
       <view :style="{marginTop:10}">
-        <nb-button
-          block
-          :style="{backgroundColor: '#35654d'}"
-          :on-press="() => navigation.navigate('NewAddress')"
-        >
-          <Icon name="plus" color="#fff" />
-          <nb-text>Novo Endereço</nb-text>
+        <nb-button block :style="{backgroundColor: '#35654d'}" :on-press="startDelivery">
+          <nb-text :style="{fontWeight: 'bold'}">Confirmar</nb-text>
         </nb-button>
       </view>
       <view :style="{marginTop:10}">
-        <nb-button block :style="{backgroundColor: '#35654d'}" :on-press="askDelivery">
-          <nb-text :style="{fontWeight: 'bold'}">Pedir Motorista</nb-text>
+        <nb-button
+          block
+          :style="{backgroundColor: '#35654d'}"
+          :on-press="() => navigation.navigate('Delivery')"
+        >
+          <nb-text>Entregar</nb-text>
         </nb-button>
       </view>
     </nb-content>
@@ -93,14 +93,14 @@ export default {
     userName() {
       return store.state.userObj.name;
     },
-    userAddresses() {
-      return store.state.adresses;
+    newRequests() {
+      return store.state.newRequests;
     },
-    fetchingAddresses() {
-      return store.state.fetchingAddresses;
+    fetchingNewRequests() {
+      return store.state.fetchingNewRequests;
     },
-    selectedAddress() {
-      return store.state.selectedAddress;
+    selectedRequest() {
+      return store.state.selectedRequest;
     }
   },
   props: {
@@ -109,40 +109,46 @@ export default {
     }
   },
   created() {
-    this.fetchAddresses();
+    this.fetchNewRequests();
   },
   methods: {
-    fetchAddresses() {
-      return store.dispatch("GET_USER_ADRESSES", store.state.userObj.id);
+    fetchNewRequests() {
+      return store.dispatch("GET_NEW_REQUESTS");
     },
     navigate() {
       this.navigation.navigate("Home");
     },
-    startRequest() {
-      store.dispatch("START_REQUEST", store.state.userObj.id);
-      this.navigation.navigate("History");
+    startDelivery() {
+      store.dispatch("START_DELIVERY", {
+        driver_id: store.state.userObj.id,
+        request_id: selectedRequest.request.id
+      });
+      Toast.show({
+        text: "Entregue o pedido e clique em 'Entregar'",
+        buttonText: "Okay"
+      });
     },
-    changeAddress(address) {
-      return store.dispatch("SET_ADDRESS", address);
+    changeRequest(request) {
+      return store.dispatch("SET_SELECTED_REQUEST", request);
     },
-    askDelivery: function() {
-      if (this.selectedAddress.id) {
+    askStartDelivery: function() {
+      if (this.selectedRequest.request.id) {
         Alert.alert(
-          "Confirme o endereço",
-          `${this.selectedAddress.street}, ${this.selectedAddress.number}. ${this.selectedAddress.district}, ${this.selectedAddress.state}, ${this.selectedAddress.country}`,
+          "Confirme o pedido",
+          `${this.selectedRequest.user.name}`,
           [
             {
               text: "Cancel",
               onPress: () => console.log("Cancel Pressed"),
               style: "cancel"
             },
-            { text: "OK", onPress: () => this.startRequest() }
+            { text: "OK", onPress: () => this.startDelivery() }
           ],
           { cancelable: false }
         );
       } else {
         Toast.show({
-          text: "Selecione um endereço",
+          text: "Selecione um pedido",
           buttonText: "Okay"
         });
       }

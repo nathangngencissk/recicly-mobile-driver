@@ -2,7 +2,7 @@
   <nb-container v-if="loaded">
     <nb-header :style="{backgroundColor: '#35654d'}">
       <nb-body>
-        <nb-title :style="{marginLeft: 10}">Recicly</nb-title>
+        <nb-title :style="{marginLeft: 10}">Recicly Driver</nb-title>
       </nb-body>
     </nb-header>
     <nb-content padder>

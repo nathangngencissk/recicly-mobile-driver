@@ -12,12 +12,6 @@
           <nb-text :on-press="home">Inicio</nb-text>
         </nb-list-item>
         <nb-list-item>
-          <nb-text :on-press="shop">Loja</nb-text>
-        </nb-list-item>
-        <nb-list-item>
-          <nb-text :on-press="orders">Pedidos</nb-text>
-        </nb-list-item>
-        <nb-list-item>
           <nb-text :on-press="history">Histórico</nb-text>
         </nb-list-item>
         <nb-list-item>

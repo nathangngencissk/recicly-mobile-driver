@@ -1,4 +1,4 @@
-import { fetchPosts, login, fetchAdresses, fetchRequests, addRequest, fetchProducts, fetchOrders, addAddress, addUser, buyProduct } from './fetch';
+import { fetchPosts, login, fetchAdresses, fetchRequests, addRequest, fetchProducts, fetchOrders, addAddress, addUser, buyProduct, fetchNewRequests } from './fetch';
 import { AsyncStorage } from 'react-native';
 
 // ensure data for rendering given list type
@@ -16,12 +16,11 @@ export function LOGIN({ commit, dispatch }, { userObj, navigate }) {
         setTimeout(() => {
             login(userObj)
                 .then(res => {
-                    let user = res.user
+                    let user = res.driver
                     if (user.id) {
                         commit('LOGIN_SUCCESFULL', user);
                         AsyncStorage.setItem('email', user.email);
-                        dispatch('GET_USER_ADRESSES', user.id);
-                        commit('FETCHING_ADDRESSES');
+                        dispatch('GET_NEW_REQUESTS');
                         navigate('Home');
                         resolve();
                     }
@@ -110,5 +109,25 @@ export function BUY_PRODUCT({ commit, state }, payload) {
     return buyProduct(payload)
         .then(res => {
             return commit('REDUCE_POINTS', payload.price)
+        });
+}
+
+export function GET_NEW_REQUESTS({ commit, dispatch }) {
+    commit('FETCHING_NEW_REQUESTS', true)
+    return fetchNewRequests()
+        .then(requests => {
+            return commit('SET_NEW_REQUESTS', requests)
+        });
+}
+
+export function SET_SELECTED_REQUEST({ commit, state }, request) {
+    return commit('SET_SELECTED_REQUEST', request)
+}
+
+
+export function START_DELIVERY({ commit, state }, delivery) {
+    return startDelivery(delivery)
+        .then(res => {
+            return commit('SET_CURRENT_DELIVERY', delivery)
         });
 }
