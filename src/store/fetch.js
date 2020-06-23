@@ -81,3 +81,11 @@ export function fetchNewRequests() {
 export function startDelivery(delivery) {
     return _post('driver/start-delivery', delivery);
 }
+
+export function searchCollector(code) {
+    return _fetch(`collector/get-code?code=${code}`);
+}
+
+export function deliver(payload) {
+    return _post('driver/deliver', payload);
+}

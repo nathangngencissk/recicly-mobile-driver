@@ -1,4 +1,4 @@
-import { fetchPosts, login, fetchAdresses, fetchRequests, addRequest, fetchProducts, fetchOrders, addAddress, addUser, buyProduct, fetchNewRequests } from './fetch';
+import { fetchPosts, login, fetchAdresses, fetchRequests, addRequest, fetchProducts, fetchOrders, addAddress, addUser, buyProduct, fetchNewRequests, startDelivery, searchCollector, deliver } from './fetch';
 import { AsyncStorage } from 'react-native';
 
 // ensure data for rendering given list type
@@ -125,9 +125,24 @@ export function SET_SELECTED_REQUEST({ commit, state }, request) {
 }
 
 
-export function START_DELIVERY({ commit, state }, delivery) {
+export function START_DELIVERY({ commit, dispatch }, delivery) {
     return startDelivery(delivery)
         .then(res => {
+            dispatch('GET_NEW_REQUESTS');
             return commit('SET_CURRENT_DELIVERY', delivery)
+        });
+}
+
+export function SEARCH_COLLECTOR({ commit, dispatch }, delivery_code) {
+    return searchCollector(delivery_code)
+        .then(collector => {
+            return commit('SET_CURRENT_COLLECTOR', collector)
+        });
+}
+
+export function DELIVER({ commit, dispatch }, payload) {
+    return deliver(payload)
+        .then(res => {
+            return commit('SET_CURRENT_DELIVERY', {})
         });
 }

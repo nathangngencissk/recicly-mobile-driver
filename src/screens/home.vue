@@ -38,8 +38,7 @@
           :onPress="() => changeRequest(request)"
         >
           <nb-left>
-            <nb-text>{{request.user.name}}</nb-text>
-            <nb-text>{{request.user.email}}</nb-text>
+            <nb-text>{{request.user.name}}, {{request.address.street}}, {{request.address.number}}. {{request.address.cep}}</nb-text>
           </nb-left>
           <nb-right>
             <nb-radio :selected="request==selectedRequest" />
@@ -47,16 +46,12 @@
         </nb-list-item>
       </nb-list>
       <view :style="{marginTop:10}">
-        <nb-button block :style="{backgroundColor: '#35654d'}" :on-press="startDelivery">
+        <nb-button block :style="{backgroundColor: '#35654d'}" :on-press="askStartDelivery">
           <nb-text :style="{fontWeight: 'bold'}">Confirmar</nb-text>
         </nb-button>
       </view>
       <view :style="{marginTop:10}">
-        <nb-button
-          block
-          :style="{backgroundColor: '#35654d'}"
-          :on-press="() => navigation.navigate('Delivery')"
-        >
+        <nb-button block :style="{backgroundColor: '#35654d'}" :on-press="goToDelivery">
           <nb-text>Entregar</nb-text>
         </nb-button>
       </view>
@@ -101,6 +96,9 @@ export default {
     },
     selectedRequest() {
       return store.state.selectedRequest;
+    },
+    currentRequest() {
+      return store.state.userObj.current_request;
     }
   },
   props: {
@@ -121,7 +119,7 @@ export default {
     startDelivery() {
       store.dispatch("START_DELIVERY", {
         driver_id: store.state.userObj.id,
-        request_id: selectedRequest.request.id
+        request_id: this.selectedRequest.request.id
       });
       Toast.show({
         text: "Entregue o pedido e clique em 'Entregar'",
@@ -131,11 +129,21 @@ export default {
     changeRequest(request) {
       return store.dispatch("SET_SELECTED_REQUEST", request);
     },
+    goToDelivery() {
+      if (this.currentRequest != null) {
+        this.navigation.navigate("Delivery");
+      } else {
+        Toast.show({
+          text: "Termine a entrega",
+          buttonText: "Okay"
+        });
+      }
+    },
     askStartDelivery: function() {
       if (this.selectedRequest.request.id) {
         Alert.alert(
           "Confirme o pedido",
-          `${this.selectedRequest.user.name}`,
+          `${this.selectedRequest.user.name}, ${this.selectedRequest.address.street}, ${this.selectedRequest.address.number}. ${this.selectedRequest.address.cep}`,
           [
             {
               text: "Cancel",

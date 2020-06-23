@@ -84,5 +84,9 @@ export function SET_SELECTED_REQUEST(state, request) {
 }
 
 export function SET_CURRENT_DELIVERY(state, delivery) {
-    state.currentDelivery = delivery;
+    state.userObj.current_request = delivery.request_id;
+}
+
+export function SET_CURRENT_COLLECTOR(state, collector) {
+    state.currentCollector = collector;
 }

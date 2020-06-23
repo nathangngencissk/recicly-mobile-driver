@@ -34,7 +34,8 @@ const store = new Vuex.Store({
         newRequests: [],
         fetchingNewRequests: false,
         selectedRequest: {},
-        currentDelivery: {}
+        currentDelivery: {},
+        currentCollector: {}
     }
 });
 
