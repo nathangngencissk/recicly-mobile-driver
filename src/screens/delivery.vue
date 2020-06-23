@@ -13,19 +13,23 @@
     </nb-header>
     <nb-content padder>
       <nb-list v-if="currentCollector.id">
-        <nb-list-item>{{currentCollector.name}}</nb-list-item>
-        <nb-list-item>{{currentCollector.email}}</nb-list-item>
+        <nb-list-item>
+          <text>{{currentCollector.name}}</text>
+        </nb-list-item>
+        <nb-list-item>
+          <text>{{currentCollector.email}}</text>
+        </nb-list-item>
       </nb-list>
       <nb-form v-else>
         <nb-item>
           <nb-input v-model="deliveryCode" placeholder="Código de entrega" />
         </nb-item>
-        <view :style="{marginTop:10}">
-          <nb-button block :style="{backgroundColor: '#35654d'}" :on-press="searchCollector">
-            <nb-text :style="{fontWeight: 'bold'}">Confirmar</nb-text>
-          </nb-button>
-        </view>
       </nb-form>
+      <view :style="{marginTop:10}">
+        <nb-button block :style="{backgroundColor: '#35654d'}" :on-press="searchCollector">
+          <nb-text :style="{fontWeight: 'bold'}">Confirmar</nb-text>
+        </nb-button>
+      </view>
     </nb-content>
   </nb-container>
 </template>
@@ -62,7 +66,7 @@ export default {
           id_request: store.state.userObj.current_request,
           code: this.deliveryCode
         });
-        this.navigator.navigate("Home");
+        this.navigation.navigate("Home");
       } else {
         store.dispatch("SEARCH_COLLECTOR", this.deliveryCode);
       }

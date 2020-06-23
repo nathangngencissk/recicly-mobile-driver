@@ -136,13 +136,14 @@ export function START_DELIVERY({ commit, dispatch }, delivery) {
 export function SEARCH_COLLECTOR({ commit, dispatch }, delivery_code) {
     return searchCollector(delivery_code)
         .then(collector => {
-            return commit('SET_CURRENT_COLLECTOR', collector)
+            return commit('SET_CURRENT_COLLECTOR', collector.collector)
         });
 }
 
 export function DELIVER({ commit, dispatch }, payload) {
     return deliver(payload)
         .then(res => {
+            commit('SET_CURRENT_COLLECTOR', {})
             return commit('SET_CURRENT_DELIVERY', {})
         });
 }

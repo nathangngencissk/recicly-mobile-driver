@@ -134,7 +134,7 @@ export default {
         this.navigation.navigate("Delivery");
       } else {
         Toast.show({
-          text: "Termine a entrega",
+          text: "Comece uma entrega",
           buttonText: "Okay"
         });
       }
